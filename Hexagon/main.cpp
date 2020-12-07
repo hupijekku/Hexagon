@@ -9,9 +9,6 @@
 
 using namespace sf;
 
-bool validateCoord(int x, int y, int c) {
-	return (x + y >= -c && x + y <= c);
-}
 
 
 int main() {
@@ -32,7 +29,7 @@ int main() {
 	Render render(game, window, 100);
 	
 	// Map size
-	int c = 30;
+	int c = 50;
 
 	// Initialize map
 	// Currently hexagon shaped with (0, 0) at the center.
@@ -48,7 +45,7 @@ int main() {
 	}
 
 	// Has anything changed that needs re-rendering?
-	bool doRender = false;
+	bool doRender = true;
 	while (window.isOpen()) {
 
 		
@@ -78,7 +75,7 @@ int main() {
 				Vector2i pos(event.mouseButton.x, event.mouseButton.y);
 				Vector2i hexCoord = Util::pointToHex(pos, render.getOffset(), render.getDist());
 				std::cout << hexCoord.x << ", " << hexCoord.y << std::endl;
-				if (validateCoord(hexCoord.x, hexCoord.y, c)) {
+				if (game.getHexes().find(hexCoord) != game.getHexes().end()) {
 					Hex& hex = game.getHexes().at(hexCoord);
 					std::cout << hex.display() << std::endl;
 					hex.c = (hex.c == Color::White) ? Color::Red : Color::White;
