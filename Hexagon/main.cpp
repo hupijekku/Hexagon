@@ -29,7 +29,7 @@ int main() {
 	Render render(game, window, 100);
 	
 	// Map size
-	int c = 50;
+	int c = 30;
 
 	// Initialize map
 	// Currently hexagon shaped with (0, 0) at the center.

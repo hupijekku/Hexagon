@@ -15,7 +15,7 @@ Render::Render(Game& game, RenderWindow& window, float dist) : window(window), g
 
 void Render::update() {
 	// Get hexes around the visible screen and draw those
-	float radius = 1.0f / this->dist * 5000;
+	float radius = 5000.0f / this->dist;
 	Vector2i topLeft(0, 0);
 	Vector2i bottomRight(Settings::screenWidth, Settings::screenHeight);
 	Vector2i tlHex = Util::pointToHex(topLeft, this->getOffset(), this->dist);
@@ -34,6 +34,7 @@ void Render::update() {
 			}
 			Hex& hex = game.getHexes().at(currPos);
 			CircleShape shape(radius, 6);
+
 			this->drawShape(shape, currPos, hex.c);
 		}
 	}
@@ -41,17 +42,14 @@ void Render::update() {
 
 void Render::drawShape(Shape& shape, Vector2i& position, Color& fillColor, Color& outlineColor) {
 	// Calculate shape position
-	float radius = 1.0f / this->dist * 5000;
-	float drawX = radius * (sqrt(3) * position.x + sqrt(3) / 2 * position.y) + 600 - (100 * Settings::cameraSpeed * this->offset.x * 1 / this->dist);
-	float drawZ = radius * (3.0f / 2.0f * position.y) + 300 - (100 * Settings::cameraSpeed * this->offset.y * 1 / this->dist);
+	float radius = 5000.0f / this->dist;
+	float drawX = radius * (sqrtf(3.0f) * position.x + sqrtf(3.0f) / 2.0f * position.y) + 600.0f - (100.0f * Settings::cameraSpeed * this->offset.x / this->dist);
+	float drawZ = radius * (3.0f / 2.0f * position.y) + 300.0f - (100.0f * Settings::cameraSpeed * this->offset.y / this->dist);
 
-	// Check if shape is in screen
-	if (drawX + radius * sqrt(3) < -radius/10 || drawZ + radius * 2 < 0) return;
-	if (drawX > Settings::screenWidth || drawZ > Settings::screenHeight) return;
-
+	shape.setOrigin(radius, radius);
 	shape.setPosition(drawX, drawZ);
 	shape.setFillColor(fillColor);
-	shape.setOutlineColor(Color::Black);
+	shape.setOutlineColor(outlineColor);
 	shape.setOutlineThickness(2.0f);
 	this->window.draw(shape);
 }

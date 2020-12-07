@@ -1,13 +1,11 @@
 #include "Util.h"
 
-// TODO: Some bug here causing clicking near right edge of hex to select the one next to it.
-
 Vector2i Util::pointToHex(Vector2i& pos, Vector2i offset, float dist)
 {
-	float radius = 1.0f / dist * 5000;
-	int pX = (int)(pos.x - 600 + (100 * Settings::cameraSpeed * offset.x * 1 / dist) - sqrt(3) * radius / 2);
-	int pY = (int)(pos.y - 300 + (100 * Settings::cameraSpeed * offset.y * 1 / dist) - radius);
-	float x = (float)((sqrt(3) / 3.0f * pX - pY / 3.0f) / radius);
+	float radius = 5000.0f / dist;
+	float pX = pos.x - 600.0f + (100.0f * Settings::cameraSpeed * offset.x / dist);
+	float pY = pos.y - 300.0f + (100.0f * Settings::cameraSpeed * offset.y / dist);
+	float x = (sqrt(3) / 3.0f * pX - pY / 3.0f) / radius;
 	float z = (2.0f / 3.0f * pY) / radius;
 	Vector2f ret(x, z);
 	return roundHex(ret);
