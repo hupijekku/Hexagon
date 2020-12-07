@@ -8,16 +8,23 @@
 
 using namespace sf;
 
-Render::Render(Game& game, RenderWindow& window, float dist) : window(window), game(game) {
+Render::Render(Game& game, RenderWindow& window, Color clear, float dist) : window(window), game(game) {
+	this->clear = clear;
 	this->dist = dist;
 	this->font.loadFromFile("Roboto-Light.ttf");
 };
 
+void Render::setChanged(bool changed) {
+	this->changed = changed;
+}
+
 void Render::update() {
+	if (!this->changed) return;
+	this->window.clear(this->clear);
 	// Get hexes around the visible screen and draw those
 	float radius = 5000.0f / this->dist;
-	Vector2i topLeft(0, 0);
-	Vector2i bottomRight(Settings::screenWidth, Settings::screenHeight);
+	Vector2f topLeft(0.0f, 0.0f);
+	Vector2f bottomRight(Settings::screenWidth, Settings::screenHeight);
 	Vector2i tlHex = Util::pointToHex(topLeft, this->getOffset(), this->dist);
 	Vector2i brHex = Util::pointToHex(bottomRight, this->getOffset(), this->dist);
 	// Using axial coordinates so we want to get some extra or we end up with a rhombus
@@ -38,6 +45,7 @@ void Render::update() {
 			this->drawShape(shape, currPos, hex.c);
 		}
 	}
+	this->changed = false;
 }
 
 void Render::drawShape(Shape& shape, Vector2i& position, Color fillColor, Color outlineColor) {

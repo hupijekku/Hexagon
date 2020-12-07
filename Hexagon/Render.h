@@ -11,8 +11,10 @@ private:
 	float dist;
 	Vector2i offset;
 	Font font;
+	bool changed;
+	Color clear;
 public:
-	Render(Game& game, RenderWindow& window, float dist);
+	Render(Game& game, RenderWindow& window, Color clear, float dist);
 	void drawShape(Shape& shape, Vector2i& position);
 	void drawShape(Shape& shape, Vector2i& position, Color fillColor);
 	void drawShape(Shape& shape, Vector2i& position, Color fillColor, Color outlineColor);
@@ -21,5 +23,6 @@ public:
 	Vector2i getOffset();
 	void setDist(float dist);
 	float getDist();
+	void setChanged(bool changed);
 };
 

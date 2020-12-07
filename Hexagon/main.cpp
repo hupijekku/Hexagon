@@ -6,6 +6,8 @@
 #include "Settings.h"
 #include "Game.h"
 #include "Util.h"
+#include "Input.h"
+#include "EventHandler.h"
 
 using namespace sf;
 
@@ -26,7 +28,8 @@ int main() {
 
 	// Main objects
 	Game game;
-	Render render(game, window, 100);
+	Render render(game, window, Color(120, 120, 120), 100);
+	Input input(game, render);
 	
 	// Map size
 	int c = 30;
@@ -51,79 +54,11 @@ int main() {
 		
 		Event event;
 		while (window.pollEvent(event)) {
-			switch (event.type) {
-			// TODO: Input class
-			case Event::Closed:
-			{
-				window.close();
-			}
-			break;
-			case Event::MouseWheelMoved:
-			{
-				// Zooming in and out. Large dist => Small hexes
-				float dist = render.getDist();
-				float delta = event.mouseWheel.delta * 3.0f;
-				dist -= delta;
-				dist = fmax(fmin(dist, 1.0f / Settings::screenHeight * 100000.0f), 1.0f / Settings::screenHeight * 30000.0f);
-				render.setDist(dist);
-				doRender = true;
-			}
-			break;
-			case Event::MouseButtonPressed:
-			{
-				// Get hex under mouse position on click
-				Vector2i pos(event.mouseButton.x, event.mouseButton.y);
-				Vector2i hexCoord = Util::pointToHex(pos, render.getOffset(), render.getDist());
-				std::cout << hexCoord.x << ", " << hexCoord.y << std::endl;
-				if (game.getHexes().find(hexCoord) != game.getHexes().end()) {
-					Hex& hex = game.getHexes().at(hexCoord);
-					std::cout << hex.display() << std::endl;
-					hex.c = (hex.c == Color::White) ? Color::Red : Color::White;
-					doRender = true;
-				}
-			}
-			break;
-			case Event::Resized:
-			{
-				std::cout << "Resized" << std::endl;
-				Settings::screenWidth = event.size.width;
-				Settings::screenHeight = event.size.height;
-				FloatRect area(0, 0, event.size.width, event.size.height);
-				window.setView(View(area));
-				doRender = true;
-			}
-			break;
-			
-			}
+			EventHandler::handleEvent(event, window, input);
 		}
-
-		// Check camera movement
-		Vector2i offset = render.getOffset();
-
-		if (Keyboard::isKeyPressed(Keyboard::A)) {
-			offset.x--;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::D)) {
-			offset.x++;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::W)) {
-			offset.y--;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::S)) {
-			offset.y++;
-		}
-
-		if (offset != render.getOffset()) {
-			render.setOffset(offset);
-			doRender = true;
-		}
-
-		// If something changed, render the screen
-		if (doRender) {
-			window.clear(Color(128, 128, 128));
-			render.update();
-			doRender = false;
-		}
+		
+		input.update();
+		render.update();
 
 		window.display();
 
