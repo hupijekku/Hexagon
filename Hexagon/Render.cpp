@@ -40,7 +40,7 @@ void Render::update() {
 	}
 }
 
-void Render::drawShape(Shape& shape, Vector2i& position, Color& fillColor, Color& outlineColor) {
+void Render::drawShape(Shape& shape, Vector2i& position, Color fillColor, Color outlineColor) {
 	// Calculate shape position
 	float radius = 5000.0f / this->dist;
 	float drawX = radius * (sqrtf(3.0f) * position.x + sqrtf(3.0f) / 2.0f * position.y) + 600.0f - (100.0f * Settings::cameraSpeed * this->offset.x / this->dist);
@@ -54,14 +54,12 @@ void Render::drawShape(Shape& shape, Vector2i& position, Color& fillColor, Color
 	this->window.draw(shape);
 }
 
-void Render::drawShape(Shape& shape, Vector2i& position, Color& fillColor) {
-	Color outlineColor = Color::Black;
-	drawShape(shape, position, fillColor, outlineColor);
+void Render::drawShape(Shape& shape, Vector2i& position, Color fillColor) {
+	drawShape(shape, position, fillColor, Color::Black);
 }
 
 void Render::drawShape(Shape& shape, Vector2i& position) {
-	Color color = Color::White;
-	drawShape(shape, position, color);
+	drawShape(shape, position, Color::White);
 }
 
 
