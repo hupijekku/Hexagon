@@ -92,6 +92,15 @@ void GUI::createSelectionWindow() {
 	lblPosition->setPosition("5%", "10%");
 	lblPosition->setVerticalAlignment(Label::VerticalAlignment::Center);
 	lblPosition->setHorizontalAlignment(Label::HorizontalAlignment::Center);
+
+	auto lblOwner = Label::create("Owned by: ");
+	pnlSelection->add(lblOwner, "lblOwner");
+	lblOwner->setOrigin(0.0f, 0.5f);
+	lblOwner->getRenderer()->setTextColor(sf::Color(255, 255, 255));
+	lblOwner->setTextSize(Settings::screenHeight * 0.02f);
+	lblOwner->setPosition("5%", "15%");
+	lblOwner->setVerticalAlignment(Label::VerticalAlignment::Center);
+	lblOwner->setHorizontalAlignment(Label::HorizontalAlignment::Center);
 }
 
 void GUI::update() {
@@ -101,17 +110,19 @@ void GUI::update() {
 
 void GUI::updateResourceLabels() {
 
-	auto gold = this->gui.get<Label>("lblGold");
-	gold->setTextSize(Settings::screenHeight * 0.02f);
-	gold->setText(std::to_string(Player::getGold()) + " G");
+	if (Game::getCurrentPlayer()) {
+		auto gold = this->gui.get<Label>("lblGold");
+		gold->setTextSize(Settings::screenHeight * 0.02f);
+		gold->setText(std::to_string(Game::getCurrentPlayer()->getGold()) + " G");
 
-	auto culture = this->gui.get<Label>("lblCulture");
-	culture->setTextSize(Settings::screenHeight * 0.02f);
-	culture->setText(std::to_string(Player::getCulture()) + " C");
+		auto culture = this->gui.get<Label>("lblCulture");
+		culture->setTextSize(Settings::screenHeight * 0.02f);
+		culture->setText(std::to_string(Game::getCurrentPlayer()->getCulture()) + " C");
 
-	auto science = this->gui.get<Label>("lblScience");
-	science->setTextSize(Settings::screenHeight * 0.02f);
-	science->setText(std::to_string(Player::getScience()) + " S");
+		auto science = this->gui.get<Label>("lblScience");
+		science->setTextSize(Settings::screenHeight * 0.02f);
+		science->setText(std::to_string(Game::getCurrentPlayer()->getScience()) + " S");
+	}
 
 	auto goldIcon = this->gui.get<Picture>("icoGold");
 	goldIcon->setHeight("100%");
@@ -128,11 +139,25 @@ void GUI::updateResourceLabels() {
 }
 
 void GUI::updateSelection() {
-	auto lblPosition = this->gui.get<Label>("lblPosition");
+	auto pnlSelection = this->gui.get<Panel>("pnlSelection");
+	auto lblPosition = pnlSelection->get<Label>("lblPosition");
 	lblPosition->setTextSize(Settings::screenHeight * 0.02f);
 
+	auto lblOwner = pnlSelection->get<Label>("lblOwner");
+	lblOwner->setTextSize(Settings::screenHeight * 0.02f);
+
 	if (Game::getSelectedHex()) {
+		pnlSelection->setVisible(true);
 		Hex& hex = *Game::getSelectedHex();
 		lblPosition->setText("x: " + std::to_string(hex.getX()) + "\t y: " + std::to_string(hex.getZ()));
+		std::string owner;
+		if (hex.getOwner())
+			owner = hex.getOwner()->getName();
+		else
+			owner = "None";
+		lblOwner->setText("Owned by: " + owner);
+	}
+	else {
+		pnlSelection->setVisible(false);
 	}
 }

@@ -1,19 +1,24 @@
 #pragma once
+#include <string>
 class Player
 {
 private:
-	static int gold;
-	static int culture;
-	static int science;
+	std::string name;
+	int gold;
+	int culture;
+	int science;
 public:
-	static int getGold();
-	static void setGold(int gold);
-	static void changeGold(int change);
-	static int getCulture();
-	static void setCulture(int culture);
-	static void changeCulture(int change);
-	static int getScience();
-	static void setScience(int science);
-	static void changeScience(int change);
+	Player(std::string name, int g, int c, int s);
+	int getGold();
+	void setGold(int gold);
+	void changeGold(int change);
+	int getCulture();
+	void setCulture(int culture);
+	void changeCulture(int change);
+	int getScience();
+	void setScience(int science);
+	void changeScience(int change);
+	std::string getName();
+	void setName(std::string name);
 };
 

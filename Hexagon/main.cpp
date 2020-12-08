@@ -29,8 +29,9 @@ int main() {
 	Clock clock;
 
 	// Main objects
-	Player();
+	Player player("Player 1", 100, 0, 0);
 	Game();
+	Game::addPlayer(player);
 	Render render(window, tgui, 100);
 	Input input(render);
 	GUI mGui(tgui);

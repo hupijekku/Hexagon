@@ -10,7 +10,7 @@ Hex::Hex(int x, int z, Color c)
 	this->x = x;
 	this->z = z;
 	this->c = c;
-	this->owner = 0;
+	this->owner = nullptr;
 }
 
 Hex::Hex(int x, int z)
@@ -18,14 +18,14 @@ Hex::Hex(int x, int z)
 	this->x = x;
 	this->z = z;
 	this->c = Color::White;
-	this->owner = 0;
+	this->owner = nullptr;
 }
 
 Hex::Hex() {
 	this->x = 0;
 	this->z = 0;
 	this->c = Color::White;
-	this->owner = 0;
+	this->owner = nullptr;
 }
 
 std::string Hex::display()
@@ -51,11 +51,11 @@ void Hex::setColor(Color color) {
 	this->c = color;
 }
 
-void Hex::setOwner(int owner) {
-	this->owner = owner;
+void Hex::setOwner(Player& player) {
+	this->owner = &player;
 }
 
-int Hex::getOwner() {
+Player* Hex::getOwner() {
 	return this->owner;
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 using namespace sf;
 
 namespace std
@@ -27,14 +28,14 @@ class Hex {
 private:
 	int x;
 	int z;
-	int owner;
+	Player* owner;
 	Color c;
 public:
 	int getX();
 	int getZ();
 	int getY();
-	int getOwner();
-	void setOwner(int owner);
+	Player* getOwner();
+	void setOwner(Player& owner);
 	Color getColor();
 	void setColor(Color color);
 	Hex(int x, int z, Color c);

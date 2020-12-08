@@ -1,41 +1,52 @@
 #include "Player.h"
 
-int Player::gold = 100000;
-int Player::culture = 0;
-int Player::science = 0;
+Player::Player(std::string name, int g, int c, int s) {
+	this->name = name;
+	this->gold = g;
+	this->culture = c;
+	this->science = s;
+}
 
 int Player::getGold() {
-	return Player::gold;
+	return this->gold;
 }
 
 void Player::setGold(int gold) {
-	Player::gold = gold;
+	this->gold = gold;
 }
 
 void Player::changeGold(int change) {
-	Player::gold += change;
+	this->gold += change;
 }
 
 int Player::getCulture() {
-	return Player::culture;
+	return this->culture;
 }
 
 void Player::setCulture(int culture) {
-	Player::culture = culture;
+	this->culture = culture;
 }
 
 void Player::changeCulture(int change) {
-	Player::culture += change;
+	this->culture += change;
 }
 
 int Player::getScience() {
-	return Player::science;
+	return this->science;
 }
 
 void Player::setScience(int science) {
-	Player::science = science;
+	this->science = science;
 }
 
 void Player::changeScience(int change) {
-	Player::science += change;
+	this->science += change;
+}
+
+std::string Player::getName() {
+	return this->name;
+}
+
+void Player::setName(std::string name) {
+	this->name = name;
 }
