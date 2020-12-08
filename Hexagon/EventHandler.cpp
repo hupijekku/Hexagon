@@ -38,6 +38,7 @@ void EventHandler::handleEvent(Event& event, RenderWindow& window, Input& input)
 		Settings::screenWidth = event.size.width;
 		Settings::screenHeight = event.size.height;
 		FloatRect area(0, 0, event.size.width, event.size.height);
+		input.onMouseScroll(0);
 		window.setView(View(area));
 	}
 	break;

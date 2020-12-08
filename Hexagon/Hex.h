@@ -24,11 +24,19 @@ namespace std
 }
 
 class Hex {
-public:
+private:
 	int x;
 	int z;
-	int getY();
+	int owner;
 	Color c;
+public:
+	int getX();
+	int getZ();
+	int getY();
+	int getOwner();
+	void setOwner(int owner);
+	Color getColor();
+	void setColor(Color color);
 	Hex(int x, int z, Color c);
 	Hex(int x, int z);
 	Hex();

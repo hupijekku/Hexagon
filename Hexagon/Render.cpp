@@ -8,19 +8,25 @@
 
 using namespace sf;
 
-Render::Render(Game& game, RenderWindow& window, Color clear, float dist) : window(window), game(game) {
-	this->clear = clear;
+Render::Render(RenderWindow& window, tgui::Gui& gui, float dist) : window(window), gui(gui) {
 	this->dist = dist;
 	this->font.loadFromFile("Roboto-Light.ttf");
+	this->changed = true;
+	if (!this->textHex.loadFromFile("images/text_hexagon.png")) {
+		std::cout << "Couldn't load hexagon texture" << std::endl;
+	}
 };
 
 void Render::setChanged(bool changed) {
 	this->changed = changed;
 }
 
-void Render::update() {
-	if (!this->changed) return;
-	this->window.clear(this->clear);
+void Render::update(float delta) {
+	//if (!this->changed) {
+	//	this->gui.draw();
+	//	return;
+	//}
+	this->window.clear(Color(120, 120, 120));
 	// Get hexes around the visible screen and draw those
 	float radius = 5000.0f / this->dist;
 	Vector2f topLeft(0.0f, 0.0f);
@@ -36,15 +42,16 @@ void Render::update() {
 	for (int i = tlHex.x; i < brHex.x; i++) {
 		for (int j = tlHex.y; j < brHex.y; j++) {
 			Vector2i currPos(i, j);
-			if (game.getHexes().find(currPos) == game.getHexes().end()) {
+			if (Game::getHexes().find(currPos) == Game::getHexes().end()) {
 				continue;
 			}
-			Hex& hex = game.getHexes().at(currPos);
+			Hex& hex = Game::getHexes().at(currPos);
 			CircleShape shape(radius, 6);
-
-			this->drawShape(shape, currPos, hex.c);
+			shape.setTexture(&this->textHex);
+			this->drawShape(shape, currPos, hex.getColor());
 		}
 	}
+	this->gui.draw();
 	this->changed = false;
 }
 
@@ -71,11 +78,11 @@ void Render::drawShape(Shape& shape, Vector2i& position) {
 }
 
 
-void Render::setOffset(Vector2i offset) {
+void Render::setOffset(Vector2f offset) {
 	this->offset = offset;
 }
 
-Vector2i Render::getOffset() {
+Vector2f Render::getOffset() {
 	return this->offset;
 }
 

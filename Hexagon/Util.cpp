@@ -1,6 +1,6 @@
 #include "Util.h"
 
-Vector2i Util::pointToHex(Vector2f& pos, Vector2i offset, float dist)
+Vector2i Util::pointToHex(Vector2f& pos, Vector2f offset, float dist)
 {
 	float radius = 5000.0f / dist;
 	float pX = pos.x - 600.0f + (100.0f * Settings::cameraSpeed * offset.x / dist);

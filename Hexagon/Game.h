@@ -6,9 +6,16 @@
 class Game
 {
 private:
-	std::unordered_map<Vector2i, Hex> hexes;
+	static std::unordered_map<Vector2i, Hex> hexes;
+	static Hex* selectedHex;
+	static Hex* prevSelection;
 public:
-	std::unordered_map<Vector2i, Hex>& getHexes();
-	void addHex(Vector2i& pos, Hex& hex);
+	static std::unordered_map<Vector2i, Hex>& getHexes();
+	static void addHex(Vector2i& pos, Hex& hex);
+	static void selectHex(Hex* hex);
+	static void selectHex(Vector2i coordinates);
+	static Hex& getHexAt(Vector2i coordinates);
+	static Hex& getHexAt(int x, int z);
+	static Hex* getSelectedHex();
 };
 

@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Render.h"
 #include "Input.h"
+#include "GUI.h"
 
 using namespace sf;
 

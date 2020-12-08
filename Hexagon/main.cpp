@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
 #include <iostream>
 #include <unordered_map>
 #include "Hex.h"
@@ -8,6 +9,8 @@
 #include "Util.h"
 #include "Input.h"
 #include "EventHandler.h"
+#include "GUI.h"
+#include "Player.h"
 
 using namespace sf;
 
@@ -20,17 +23,19 @@ int main() {
 	RenderWindow window(VideoMode(Settings::screenWidth, Settings::screenHeight), "Hexagons", Style::Default, cSettings);
 	window.setFramerateLimit(60);
 
+	tgui::GuiSFML tgui(window);
 
 	// For fps counter
-	Clock clock; 
-	Time prevTime = clock.getElapsedTime();
-	Time currTime;
+	Clock clock;
 
 	// Main objects
-	Game game;
-	Render render(game, window, Color(120, 120, 120), 100);
-	Input input(game, render);
-	
+	Player();
+	Game();
+	Render render(window, tgui, 100);
+	Input input(render);
+	GUI mGui(tgui);
+	mGui.createGUI();
+
 	// Map size
 	int c = 30;
 
@@ -42,31 +47,31 @@ int main() {
 			if (i + j > -c - 1 && i + j < c + 1) {
 				Hex hex(i, j, Color::White);
 				Vector2i vec(i, j);
-				game.addHex(vec, hex);
+				Game::addHex(vec, hex);
 			}
 		}
 	}
 
-	// Has anything changed that needs re-rendering?
-	bool doRender = true;
 	while (window.isOpen()) {
 
+		// Calculate FPS
+		Time time = clock.restart();
+		float delta = time.asSeconds();
+		float fps = 1.0f / delta;
+		window.setTitle("Hexagon - FPS: " + std::to_string((int)fps));
 		
 		Event event;
 		while (window.pollEvent(event)) {
+			// returns true if event was handled, false if no gui-object handled the event
+			bool guiHandled = tgui.handleEvent(event);
+			if (event.type == Event::MouseButtonPressed && guiHandled) break;
 			EventHandler::handleEvent(event, window, input);
 		}
-		
-		input.update();
-		render.update();
 
+		input.update(delta);
+		render.update(delta);
+		mGui.update();
 		window.display();
-
-		// Calculate FPS
-		currTime = clock.getElapsedTime();
-		float fps = 1.0f / (currTime.asSeconds() - prevTime.asSeconds());
-		window.setTitle("Hexagon - FPS: " + std::to_string((int)fps));
-		prevTime = currTime;
 	}
 
 	return 0;

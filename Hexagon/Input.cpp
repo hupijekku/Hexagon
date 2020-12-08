@@ -7,7 +7,6 @@
 using namespace sf;
 
 void Input::onKeyDown(Keyboard::Key& key) {
-	std::cout << "A" << std::endl;
 	this->pressed.insert(key);
 }
 
@@ -19,9 +18,8 @@ void Input::onMouseDown(Mouse::Button& button, Vector2f& position) {
 	this->mouse[button] = true;
 	// Get hex under mouse position on click
 	Vector2i hexCoord = Util::pointToHex(position, this->render.getOffset(), this->render.getDist());
-	if (game.getHexes().find(hexCoord) != game.getHexes().end() && button == Mouse::Left) {
-		Hex& hex = game.getHexes().at(hexCoord);
-		hex.c = (hex.c == Color::White) ? Color::Red : Color::White;
+	if (Game::getHexes().find(hexCoord) != Game::getHexes().end() && button == Mouse::Left) {
+		Game::selectHex(hexCoord);
 		this->render.setChanged(true);
 	}
 }
@@ -43,23 +41,23 @@ void Input::onMouseScroll(int delta) {
 	this->render.setDist(dist);
 }
 
-void Input::update() {
+void Input::update(float delta) {
 
-	Vector2i offset = this->render.getOffset();
+	Vector2f offset = this->render.getOffset();
 	const auto& it = this->pressed.end();
 
 	// Camera controls
 	if (this->pressed.find(Keyboard::A) != it) {
-		offset.x--;
+		offset.x -= 50 * delta;
 	}
 	if (this->pressed.find(Keyboard::D) != it) {
-		offset.x++;
+		offset.x += 50 * delta;
 	}
 	if (this->pressed.find(Keyboard::W) != it) {
-		offset.y--;
+		offset.y -= 50 * delta;
 	}
 	if (this->pressed.find(Keyboard::S) != it) {
-		offset.y++;
+		offset.y += 50 * delta;
 	}
 
 	if (offset != this->render.getOffset()) this->render.setChanged(true);
