@@ -24,6 +24,7 @@ public:
 	void setOffset(Vector2f offset);
 	Vector2f getOffset();
 	void setDist(float dist);
+	void pointCameraAtHex(Hex& hex);
 	float getDist();
 	void setChanged(bool changed);
 };

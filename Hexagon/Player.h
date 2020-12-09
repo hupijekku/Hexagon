@@ -1,9 +1,14 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "City.h"
+
+
 class Player
 {
 private:
 	std::string name;
+	std::vector<City> cities;
 	int gold;
 	int culture;
 	int science;
@@ -20,5 +25,8 @@ public:
 	void changeScience(int change);
 	std::string getName();
 	void setName(std::string name);
+	std::vector<City>& getCities();
+	City* getCity(int index);
+	void addCity(City& city);
 };
 

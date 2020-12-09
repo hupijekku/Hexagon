@@ -58,8 +58,9 @@ void Render::update(float delta) {
 void Render::drawShape(Shape& shape, Vector2i& position, Color fillColor, Color outlineColor) {
 	// Calculate shape position
 	float radius = 5000.0f / this->dist;
-	float drawX = radius * (sqrtf(3.0f) * position.x + sqrtf(3.0f) / 2.0f * position.y) + 600.0f - (100.0f * Settings::cameraSpeed * this->offset.x / this->dist);
-	float drawZ = radius * (3.0f / 2.0f * position.y) + 300.0f - (100.0f * Settings::cameraSpeed * this->offset.y / this->dist);
+	// Position = radius * hexmath - cameraPos
+	float drawX = radius * (sqrtf(3.0f) * position.x + sqrtf(3.0f) / 2.0f * position.y) - (800.0f * this->offset.x / this->dist);
+	float drawZ = radius * (3.0f / 2.0f * position.y) - (800.0f * this->offset.y / this->dist);
 
 	shape.setOrigin(radius, radius);
 	shape.setPosition(drawX, drawZ);
@@ -92,4 +93,13 @@ float Render::getDist() {
 
 void Render::setDist(float dist) {
 	this->dist = dist;
+}
+
+void Render::pointCameraAtHex(Hex& hex) {
+	//offset.x = (r*sqrt(3)*p.x+sqrt(3)/2*p.y+600)*dist/800
+	//offset.y = (r * (3 / 2) * p.y + 300) * dist / 800
+	float radius = 5000.0f / this->dist;
+	std::cout << radius << std::endl;
+	this->offset.x = (radius * sqrtf(3.0f) * hex.getX() + sqrtf(3.0f) / 2.0f * hex.getZ() - Settings::screenWidth / 2.0f) * this->dist / 800.0f;
+	this->offset.y = (radius * (3.0f / 2.0f) * hex.getZ() - Settings::screenHeight / 2.0f) * this->dist / 800.0f;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Hex.h"
+class Player;
 class City
 {
 private:

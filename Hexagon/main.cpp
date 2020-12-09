@@ -29,9 +29,8 @@ int main() {
 	Clock clock;
 
 	// Main objects
-	Player player("Player 1", 100, 0, 0);
+
 	Game();
-	Game::addPlayer(player);
 	Render render(window, tgui, 100);
 	Input input(render);
 	GUI mGui(tgui);
@@ -52,6 +51,23 @@ int main() {
 			}
 		}
 	}
+
+	// Temp for testing
+	Player player1("Player 1", 100, 0, 0);
+	Game::addPlayer(player1);
+	Player player2("Player 2", 100, 0, 0);
+	Game::addPlayer(player2);
+	Hex& hex1 = *Game::getHexAt(0, 0);
+	Hex& hex2 = *Game::getHexAt(5, 0);
+	// See Trello->Bugs
+	hex1.setOwner(Game::getPlayers().at(0));
+	hex2.setOwner(Game::getPlayers().at(1));
+	City city1(hex1);
+	City city2(hex2);
+	// See Trello->Bugs
+	Game::getPlayers().at(0).addCity(city1);
+	Game::getPlayers().at(1).addCity(city2);
+	render.pointCameraAtHex(hex1);
 
 	while (window.isOpen()) {
 

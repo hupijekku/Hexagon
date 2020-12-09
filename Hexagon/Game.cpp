@@ -85,18 +85,21 @@ std::vector<Player>& Game::getPlayers() {
 }
 
 void Game::addPlayer(Player& player) {
-	Player& p = player;
 	if (Game::players.size() == 0) {
-		Game::currentPlayer = &p;
+		Game::currentPlayer = &player;
 	}
-	Game::players.push_back(p);
+	Game::players.push_back(player);
 }
 
 void Game::nextTurn() {
-	int i = Game::turnIndex + 1;
-	if (i > Game::players.size()) {
+	int i = Game::turnIndex;
+	if (i >= Game::players.size()) {
 		i = 0;
+		Game::turnIndex = 1;
 		Game::turnCounter += 1;
+	}
+	else {
+		Game::turnIndex++;
 	}
 	Game::currentPlayer = &Game::players.at(i);
 }

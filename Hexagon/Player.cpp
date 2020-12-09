@@ -1,10 +1,12 @@
 #include "Player.h"
+#include <iostream>
 
 Player::Player(std::string name, int g, int c, int s) {
 	this->name = name;
 	this->gold = g;
 	this->culture = c;
 	this->science = s;
+	this->cities;
 }
 
 int Player::getGold() {
@@ -49,4 +51,22 @@ std::string Player::getName() {
 
 void Player::setName(std::string name) {
 	this->name = name;
+}
+
+std::vector<City>& Player::getCities() {
+	return this->cities;
+}
+
+City* Player::getCity(int index) {
+	std::cout << "Cities: " << this->cities.size() << std::endl;
+	if (this->cities.size() > index) {
+		std::cout << "Returning city" << std::endl;
+		return &this->cities.at(index);
+	}
+	return nullptr;
+}
+
+void Player::addCity(City& city) {
+	std::cout << "Adding a city to " << this->name << std::endl;
+	this->cities.push_back(city);
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Player.h"
 using namespace sf;
 
 namespace std
@@ -23,6 +22,8 @@ namespace std
 		}
 	};
 }
+
+class Player;
 
 class Hex {
 private:
