@@ -9,11 +9,12 @@ class Player
 private:
 	std::string name;
 	std::vector<City> cities;
+	Color color;
 	int gold;
 	int culture;
 	int science;
 public:
-	Player(std::string name, int g, int c, int s);
+	Player(std::string name, Color color, int g, int c, int s);
 	int getGold();
 	void setGold(int gold);
 	void changeGold(int change);
@@ -28,5 +29,6 @@ public:
 	std::vector<City>& getCities();
 	City* getCity(int index);
 	void addCity(City& city);
+	Color getColor();
 };
 

@@ -1,8 +1,9 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(std::string name, int g, int c, int s) {
+Player::Player(std::string name, Color color, int g, int c, int s) {
 	this->name = name;
+	this->color = color;
 	this->gold = g;
 	this->culture = c;
 	this->science = s;
@@ -69,4 +70,8 @@ City* Player::getCity(int index) {
 void Player::addCity(City& city) {
 	std::cout << "Adding a city to " << this->name << std::endl;
 	this->cities.push_back(city);
+}
+
+Color Player::getColor() {
+	return this->color;
 }

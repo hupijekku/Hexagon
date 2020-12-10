@@ -9,17 +9,10 @@ using namespace sf;
 void Input::onKeyDown(Keyboard::Key& key) {
 	this->pressed.insert(key);
 	if (key == Keyboard::Enter) {
-		std::cout << "Pressed enter" << std::endl;
-		std::cout << "Players: " << std::to_string(Game::getPlayers().size()) << std::endl;
-		for (auto& p : Game::getPlayers()) {
-			std::cout << "Playername: " << p.getName() << std::endl;
-		}
 		Game::nextTurn();
 		if (Game::getCurrentPlayer()) {
 			Player& p = *Game::getCurrentPlayer();
-			std::cout << "Got a player: " << p.getName() << std::endl;
 			if (p.getCity(0)) {
-				std::cout << "Player had a city" << std::endl;
 				City& c = *p.getCity(0);
 				Hex& h = c.getHex();
 				this->render.pointCameraAtHex(h);

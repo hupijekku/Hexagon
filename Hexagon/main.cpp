@@ -53,9 +53,9 @@ int main() {
 	}
 
 	// Temp for testing
-	Player player1("Player 1", 100, 0, 0);
+	Player player1("Player 1", Color(0, 255, 0), 100, 0, 0);
 	Game::addPlayer(player1);
-	Player player2("Player 2", 100, 0, 0);
+	Player player2("Player 2", Color(0, 0, 255), 100, 0, 0);
 	Game::addPlayer(player2);
 	Hex& hex1 = *Game::getHexAt(0, 0);
 	Hex& hex2 = *Game::getHexAt(5, 0);

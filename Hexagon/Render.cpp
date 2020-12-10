@@ -46,9 +46,14 @@ void Render::update(float delta) {
 				continue;
 			}
 			Hex& hex = Game::getHexes().at(currPos);
+			Color c;
+			if (hex.getOwner())
+				c = hex.getOwner()->getColor();
+			else
+				c = hex.getColor();
 			CircleShape shape(radius, 6);
 			shape.setTexture(&this->textHex);
-			this->drawShape(shape, currPos, hex.getColor());
+			this->drawShape(shape, currPos, c);
 		}
 	}
 	this->gui.draw();
