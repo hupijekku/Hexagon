@@ -47,9 +47,11 @@ int main() {
 	Game::addPlayer(player2);
 	Hex& hex1 = *Game::getHexAt(0, 0);
 	Hex& hex2 = *Game::getHexAt(5, 0);
+	Hex& hex3 = *Game::getHexAt(1, 0);
 	// See Trello->Bugs
 	hex1.setOwner(Game::getPlayers().at(0));
 	hex2.setOwner(Game::getPlayers().at(1));
+	hex3.setOwner(Game::getPlayers().at(0));
 	City city1(hex1);
 	City city2(hex2);
 	// See Trello->Bugs

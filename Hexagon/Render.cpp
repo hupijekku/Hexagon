@@ -35,8 +35,9 @@ void Render::generateTexture()
 		Vector2i pos = h.first;
 		Hex& hex = h.second;
 
-		float drawX = this->radius * (sqrtf(3.0f) * hex.getX() + sqrtf(3.0f) / 2.0f * hex.getZ()) + vec.x/2;
-		float drawZ = this->radius * (3.0f / 2.0f * hex.getZ()) + vec.y/2;
+		float drawX = this->radius * (sqrtf(3.0f) * hex.getX() + sqrtf(3.0f) / 2.0f * hex.getZ()) + vec.x / 2;
+		float drawZ = this->radius * (3.0f / 2.0f * hex.getZ()) + vec.y / 2;
+
 		CircleShape shape(this->radius, 6);
 		shape.setTexture(&this->textHex);
 		shape.setOrigin(this->radius, this->radius);
@@ -54,22 +55,135 @@ void Render::generateTexture()
 
 void Render::update(float delta) {
 	this->window.setView(this->view);
+	// Draw base
 	this->window.draw(this->sprite);
+
+	// Draw details (e.g. player colors)
+	for (auto& pair : Game::getHexes()) {
+		Vector2i pos = pair.first;
+		Hex& h = pair.second;
+		if (h.getOwner()) {
+			CircleShape shape(this->radius, 6);
+			Color c = h.getOwner()->getColor();
+			this->drawHexOutlines(shape, pos, *h.getOwner());
+			c.a = 50;
+			this->drawShape(shape, pos, c);
+			
+		}
+	}
+
 	this->gui.draw();
 	this->changed = false;
+}
+
+void Render::drawHexOutlines(Shape& shape, Vector2i& position, Player& player) {
+	Vector2u vec = this->baseMap.getTexture().getSize();
+	float drawX = this->radius * (sqrtf(3.0f) * position.x + sqrtf(3.0f) / 2.0f * position.y) + vec.x / 2;
+	float drawZ = this->radius * (3.0f / 2.0f * position.y) + vec.y / 2;
+
+	// Side 1
+	if (Game::getHexAt(position.x, position.y - 1)) {
+		Hex& h = *Game::getHexAt(position.x, position.y - 1);
+		if (!h.getOwner() || (h.getOwner() && *h.getOwner() != player )) {
+			float lX = drawX - radius * sqrtf(3.0f)/2.0f;
+			float lY = drawZ - radius / 2.0f;
+			RectangleShape outLine(Vector2f(radius, 10.0f));
+			outLine.setOrigin(0, 5.0f);
+			outLine.setPosition(lX, lY);
+			outLine.rotate(-30.0f);
+			outLine.setFillColor(player.getColor());
+			this->window.draw(outLine);
+		}
+	}
+
+	// Side 2
+	if (Game::getHexAt(position.x + 1, position.y - 1)) {
+		Hex& h = *Game::getHexAt(position.x + 1, position.y - 1);
+		if (!h.getOwner() || (h.getOwner() && *h.getOwner() != player)) {
+			float lX = drawX;
+			float lY = drawZ - radius;
+			RectangleShape outLine(Vector2f(radius, 10.0f));
+			outLine.setOrigin(0, 5.0f);
+			outLine.setPosition(lX, lY);
+			outLine.rotate(30.0f);
+			outLine.setFillColor(player.getColor());
+			this->window.draw(outLine);
+		}
+	}
+
+	// Side 3
+	if (Game::getHexAt(position.x + 1, position.y)) {
+		Hex& h = *Game::getHexAt(position.x + 1, position.y);
+		if (!h.getOwner() || (h.getOwner() && *h.getOwner() != player)) {
+			float lX = drawX + radius * sqrtf(3.0f) / 2.0f;
+			float lY = drawZ - radius / 2.0f;
+			RectangleShape outLine(Vector2f(radius, 10.0f));
+			outLine.setOrigin(0, 5.0f);
+			outLine.setPosition(lX, lY);
+			outLine.rotate(90.0f);
+			outLine.setFillColor(player.getColor());
+			this->window.draw(outLine);
+		}
+	}
+
+	// Side 4
+	if (Game::getHexAt(position.x, position.y + 1)) {
+		Hex& h = *Game::getHexAt(position.x, position.y + 1);
+		if (!h.getOwner() || (h.getOwner() && *h.getOwner() != player)) {
+			float lX = drawX + radius * sqrtf(3.0f) / 2.0f;
+			float lY = drawZ + radius / 2.0f;
+			RectangleShape outLine(Vector2f(radius, 10.0f));
+			outLine.setOrigin(0, 5.0f);
+			outLine.setPosition(lX, lY);
+			outLine.rotate(150.0f);
+			outLine.setFillColor(player.getColor());
+			this->window.draw(outLine);
+		}
+	}
+
+	// Side 5
+	if (Game::getHexAt(position.x - 1, position.y - 1)) {
+		Hex& h = *Game::getHexAt(position.x - 1, position.y - 1);
+		if (!h.getOwner() || (h.getOwner() && *h.getOwner() != player)) {
+			float lX = drawX;
+			float lY = drawZ + radius;
+			RectangleShape outLine(Vector2f(radius, 10.0f));
+			outLine.setOrigin(0, 5.0f);
+			outLine.setPosition(lX, lY);
+			outLine.rotate(210.0f);
+			outLine.setFillColor(player.getColor());
+			this->window.draw(outLine);
+		}
+	}
+
+	// Side 6
+	if (Game::getHexAt(position.x - 1, position.y)) {
+		Hex& h = *Game::getHexAt(position.x - 1, position.y);
+		if (!h.getOwner() || (h.getOwner() && *h.getOwner() != player)) {
+			float lX = drawX - radius * sqrtf(3.0f) / 2.0f;
+			float lY = drawZ + radius / 2.0f;
+			RectangleShape outLine(Vector2f(radius, 10.0f));
+			outLine.setOrigin(0, 5.0f);
+			outLine.setPosition(lX, lY);
+			outLine.rotate(-90.0f);
+			outLine.setFillColor(player.getColor());
+			this->window.draw(outLine);
+		}
+	}
 }
 
 void Render::drawShape(Shape& shape, Vector2i& position, Color fillColor, Color outlineColor) {
 	// Calculate shape position
 	// Position = radius * hexmath - cameraPos
-	float drawX = this->radius * (sqrtf(3.0f) * position.x + sqrtf(3.0f) / 2.0f * position.y);
-	float drawZ = this->radius * (3.0f / 2.0f * position.y);
+	Vector2u vec = this->baseMap.getTexture().getSize();
+	float drawX = this->radius * (sqrtf(3.0f) * position.x + sqrtf(3.0f) / 2.0f * position.y) + vec.x / 2;
+	float drawZ = this->radius * (3.0f / 2.0f * position.y) + vec.y / 2;
 
 	shape.setOrigin(this->radius, this->radius);
 	shape.setPosition(drawX, drawZ);
 	shape.setFillColor(fillColor);
-	shape.setOutlineColor(outlineColor);
-	shape.setOutlineThickness(2.0f);
+	//shape.setOutlineColor(outlineColor);
+	//shape.setOutlineThickness(2.0f);
 	this->window.draw(shape);
 }
 

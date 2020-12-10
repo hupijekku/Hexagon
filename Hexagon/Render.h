@@ -23,6 +23,7 @@ public:
 	void drawShape(Shape& shape, Vector2i& position, Color fillColor);
 	void drawShape(Shape& shape, Vector2i& position, Color fillColor, Color outlineColor);
 	void update(float delta);
+	void drawHexOutlines(Shape& shape, Vector2i& position, Player& player);
 	RenderTexture& getTexture();
 	void pointCameraAtHex(Hex& hex);
 	float getRadius();

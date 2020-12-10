@@ -72,3 +72,13 @@ void Player::addCity(City& city) {
 Color Player::getColor() {
 	return this->color;
 }
+
+bool Player::operator==(const Player& p) const
+{
+	return this->name == p.name;
+}
+
+bool Player::operator!=(const Player& p) const
+{
+	return this->name != p.name;
+}

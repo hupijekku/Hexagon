@@ -30,5 +30,8 @@ public:
 	City* getCity(int index);
 	void addCity(City& city);
 	Color getColor();
+
+	bool operator==(const Player& p) const;
+	bool operator!=(const Player& p) const;
 };
 
