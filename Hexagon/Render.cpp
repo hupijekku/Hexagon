@@ -15,7 +15,7 @@ Render::Render(RenderWindow& window, tgui::Gui& gui, float radius) : window(wind
 	this->radius = radius;
 	ContextSettings cSettings;
 	cSettings.antialiasingLevel = 4;
-	this->baseMap.create(MapGen::mapWidth * this->radius, MapGen::mapHeight * this->radius, cSettings);
+	this->baseMap.create(MapGen::mapWidth * this->radius + 1, MapGen::mapHeight * this->radius, cSettings);
 	View view(Vector2f(MapGen::mapWidth * this->radius / 2, MapGen::mapHeight * this->radius / 2.0f), Vector2f(Settings::screenWidth, Settings::screenHeight));
 	this->view = view;
 	if (!this->textHex.loadFromFile("images/text_hexagon.png")) {
@@ -27,7 +27,7 @@ void Render::setChanged(bool changed) {
 	this->changed = changed;
 }
 
-void Render::generateBase()
+void Render::generateTexture()
 {
 	Vector2u vec = this->baseMap.getSize();
 	// Render the basic map shape to the RenderTexture baseMap
@@ -86,7 +86,11 @@ RenderTexture& Render::getTexture() {
 }
 
 void Render::pointCameraAtHex(Hex& hex) {
-	
+	Vector2f centerF = this->view.getCenter();
+	Vector2f pointF(Util::hexToWorldPoint(hex, *this));
+	float x = pointF.x - centerF.x;
+	float y = pointF.y - centerF.y;
+	this->view.move(x, y);	
 }
 
 float Render::getRadius() {

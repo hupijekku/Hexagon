@@ -59,16 +59,13 @@ std::vector<City>& Player::getCities() {
 }
 
 City* Player::getCity(int index) {
-	std::cout << "Cities: " << this->cities.size() << std::endl;
 	if (this->cities.size() > index) {
-		std::cout << "Returning city" << std::endl;
 		return &this->cities.at(index);
 	}
 	return nullptr;
 }
 
 void Player::addCity(City& city) {
-	std::cout << "Adding a city to " << this->name << std::endl;
 	this->cities.push_back(city);
 }
 

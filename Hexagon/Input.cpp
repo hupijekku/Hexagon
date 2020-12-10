@@ -30,7 +30,6 @@ void Input::onMouseDown(Mouse::Button& button, Vector2f& position) {
 	this->mouse[button] = true;
 	// Get hex under mouse position on click
 	Vector2i hexCoord = Util::screenPointToHex(position, this->window, this->render);
-	std::cout << hexCoord.x << ", " << hexCoord.y << std::endl;
 	if (Game::getHexes().find(hexCoord) != Game::getHexes().end() && button == Mouse::Left) {
 		Game::selectHex(hexCoord);
 		this->render.setChanged(true);

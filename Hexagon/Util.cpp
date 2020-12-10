@@ -9,9 +9,18 @@ Vector2i Util::screenPointToHex(Vector2f& pos, RenderWindow& window, Render& ren
 	float radius = render.getRadius();
 	float x = (mapPos.x - mapDimensions.x / 2)/(radius * sqrtf(3.0f)) - (mapPos.y - mapDimensions.y/2)/(radius*3.0f);
 	float z = (mapPos.y - mapDimensions.y / 2)/(radius * (3.0f / 2.0f));
-	std::cout << x << ", " << z << std::endl;
 	Vector2f ret(x, z);
 	return roundHex(ret);
+}
+
+Vector2i Util::hexToWorldPoint(Hex& hex, Render& render) {
+	Vector2i hexPos(hex.getX(), hex.getZ());
+	Vector2u mapDimensions = render.getTexture().getSize();
+	float radius = render.getRadius();
+	float x = radius * (sqrtf(3.0f) * hexPos.x + sqrtf(3.0f) / 2.0f * hexPos.y) + mapDimensions.x / 2;
+	float z = radius * (3.0f / 2.0f * hexPos.y) + mapDimensions.y / 2;
+	Vector2i ret(x, z);
+	return ret;
 }
 
 // Get closest hex to the position

@@ -8,6 +8,7 @@ class Util
 {
 public:
 	static Vector2i screenPointToHex(Vector2f& pos, RenderWindow& window, Render& render);
+	static Vector2i hexToWorldPoint(Hex& hex, Render& render);
 private:
 	static Vector2i roundHex(Vector2f& pos);
 };

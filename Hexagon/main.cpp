@@ -34,7 +34,6 @@ int main() {
 	Game();
 	int c = 20;
 	MapGen::generateMap(c);
-	std::cout << Game::getHexes().size() << std::endl;
 	Render render(window, tgui, 100.0f);
 	Input input(render, window);
 	GUI mGui(tgui);
@@ -56,8 +55,7 @@ int main() {
 	// See Trello->Bugs
 	Game::getPlayers().at(0).addCity(city1);
 	Game::getPlayers().at(1).addCity(city2);
-	render.pointCameraAtHex(hex1);
-	render.generateBase();
+	render.generateTexture();
 	while (window.isOpen()) {
 
 		// Calculate FPS

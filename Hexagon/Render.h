@@ -27,7 +27,7 @@ public:
 	void pointCameraAtHex(Hex& hex);
 	float getRadius();
 	void setChanged(bool changed);
-	void generateBase();
+	void generateTexture();
 	View& getView();
 };
 
