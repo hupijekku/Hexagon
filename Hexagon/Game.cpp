@@ -45,7 +45,6 @@ void Game::selectHex(Vector2i coordinates) {
 	}
 
 	Hex& hex = *Game::getHexAt(coordinates);
-	std::cout << hex.display() << std::endl;
 	Game::selectHex(&hex);
 
 }

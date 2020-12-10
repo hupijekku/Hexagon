@@ -29,7 +29,8 @@ void Input::onKeyUp(Keyboard::Key& key) {
 void Input::onMouseDown(Mouse::Button& button, Vector2f& position) {
 	this->mouse[button] = true;
 	// Get hex under mouse position on click
-	Vector2i hexCoord = Util::pointToHex(position, this->render.getOffset(), this->render.getDist());
+	Vector2i hexCoord = Util::screenPointToHex(position, this->window, this->render);
+	std::cout << hexCoord.x << ", " << hexCoord.y << std::endl;
 	if (Game::getHexes().find(hexCoord) != Game::getHexes().end() && button == Mouse::Left) {
 		Game::selectHex(hexCoord);
 		this->render.setChanged(true);
@@ -41,39 +42,31 @@ void Input::onMouseUp(Mouse::Button& button, Vector2f& position) {
 }
 
 void Input::onMouseMove(Vector2f& position) {
-	if (mouse[0]) {
+	if (mouse[Mouse::Left]) {
 		std::cout << "Dragging mouse to x:" << position.x << " y:" << position.y << std::endl;
 	}
 }
 
 void Input::onMouseScroll(int delta) {
-	float dist = this->render.getDist();
-	dist = fmax(fmin(dist - (delta * 3.0f), 1.0f / Settings::screenHeight * 100000.0f), 1.0f / Settings::screenHeight * 30000.0f);
 	this->render.setChanged(true);
-	this->render.setDist(dist);
+	this->render.getView().zoom(1.0f-delta*0.1f);
 }
 
 void Input::update(float delta) {
 
-	Vector2f offset = this->render.getOffset();
 	const auto& it = this->pressed.end();
-
+	float h = this->render.getView().getSize().y/200.0f * delta * Settings::cameraSpeed;
 	// Camera controls
 	if (this->pressed.find(Keyboard::A) != it) {
-		offset.x -= 10 * delta * Settings::cameraSpeed;
+		this->render.getView().move(-10.0f * h, 0.0f);
 	}
 	if (this->pressed.find(Keyboard::D) != it) {
-		offset.x += 10 * delta * Settings::cameraSpeed;
+		this->render.getView().move(10.0f * h, 0.0f);
 	}
 	if (this->pressed.find(Keyboard::W) != it) {
-		offset.y -= 10 * delta * Settings::cameraSpeed;
+		this->render.getView().move(0.0f, -10.0f * h);
 	}
 	if (this->pressed.find(Keyboard::S) != it) {
-		offset.y += 10 * delta * Settings::cameraSpeed;
+		this->render.getView().move(0.0f, 10.0f * h);
 	}
-
-	if (offset != this->render.getOffset()) this->render.setChanged(true);
-
-	this->render.setOffset(offset);
-
 }

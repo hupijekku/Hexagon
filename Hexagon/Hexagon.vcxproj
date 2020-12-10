@@ -162,6 +162,7 @@
     <ClCompile Include="Hex.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapGen.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Hex.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="MapGen.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Settings.h" />

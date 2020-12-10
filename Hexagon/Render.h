@@ -8,24 +8,26 @@ class Render
 {
 private:
 	RenderWindow& window;
+	RenderTexture baseMap;
+	Sprite sprite;
+	View view;
 	tgui::Gui& gui;
-	float dist;
-	Vector2f offset;
 	Font font;
 	bool changed;
 	Color clear;
 	Texture textHex;
+	float radius;
 public:
-	Render(RenderWindow& window, tgui::Gui& gui, float dist);
+	Render(RenderWindow& window, tgui::Gui& gui, float radius);
 	void drawShape(Shape& shape, Vector2i& position);
 	void drawShape(Shape& shape, Vector2i& position, Color fillColor);
 	void drawShape(Shape& shape, Vector2i& position, Color fillColor, Color outlineColor);
 	void update(float delta);
-	void setOffset(Vector2f offset);
-	Vector2f getOffset();
-	void setDist(float dist);
+	RenderTexture& getTexture();
 	void pointCameraAtHex(Hex& hex);
-	float getDist();
+	float getRadius();
 	void setChanged(bool changed);
+	void generateBase();
+	View& getView();
 };
 

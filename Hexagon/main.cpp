@@ -11,6 +11,7 @@
 #include "EventHandler.h"
 #include "GUI.h"
 #include "Player.h"
+#include "MapGen.h"
 
 using namespace sf;
 
@@ -31,26 +32,14 @@ int main() {
 	// Main objects
 
 	Game();
-	Render render(window, tgui, 100);
-	Input input(render);
+	int c = 20;
+	MapGen::generateMap(c);
+	std::cout << Game::getHexes().size() << std::endl;
+	Render render(window, tgui, 100.0f);
+	Input input(render, window);
 	GUI mGui(tgui);
 	mGui.createGUI();
 
-	// Map size
-	int c = 30;
-
-	// Initialize map
-	// Currently hexagon shaped with (0, 0) at the center.
-	// Map generator? Terrain types, elevations etc.
-	for (int i = -c; i < c + 1; i++) {
-		for (int j = -c; j < c + 1; j++) {
-			if (i + j > -c - 1 && i + j < c + 1) {
-				Hex hex(i, j, Color::White);
-				Vector2i vec(i, j);
-				Game::addHex(vec, hex);
-			}
-		}
-	}
 
 	// Temp for testing
 	Player player1("Player 1", Color(0, 255, 0), 100, 0, 0);
@@ -68,7 +57,7 @@ int main() {
 	Game::getPlayers().at(0).addCity(city1);
 	Game::getPlayers().at(1).addCity(city2);
 	render.pointCameraAtHex(hex1);
-
+	render.generateBase();
 	while (window.isOpen()) {
 
 		// Calculate FPS
@@ -84,9 +73,10 @@ int main() {
 			if (event.type == Event::MouseButtonPressed && guiHandled) break;
 			EventHandler::handleEvent(event, window, input);
 		}
-
+		window.clear(Color(120, 120, 120));
 		input.update(delta);
 		render.update(delta);
+		
 		mGui.update();
 		window.display();
 	}

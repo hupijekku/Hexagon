@@ -12,8 +12,9 @@ private:
 	std::unordered_set<Keyboard::Key> pressed;
 	bool mouse[3];
 	Render& render;
+	RenderWindow& window;
 public:
-	Input(Render& render) : render(render), mouse{ false } {};
+	Input(Render& render, RenderWindow& window) : render(render), window(window), mouse{ false } {};
 	void onKeyDown(Keyboard::Key& key);
 	void onKeyUp(Keyboard::Key& key);
 	void onMouseDown(Mouse::Button& button, Vector2f& position);

@@ -1,12 +1,15 @@
 #include "Util.h"
 
-Vector2i Util::pointToHex(Vector2f& pos, Vector2f offset, float dist)
+#include <iostream>
+Vector2i Util::screenPointToHex(Vector2f& pos, RenderWindow& window, Render& render)
 {
-	float radius = 5000.0f / dist;
-	float pX = pos.x + (800.0f * offset.x / dist);
-	float pY = pos.y + (800.0f * offset.y / dist);
-	float x = (sqrt(3) / 3.0f * pX - pY / 3.0f) / radius;
-	float z = (2.0f / 3.0f * pY) / radius;
+	Vector2i screenPos(pos.x, pos.y);
+	Vector2f mapPos = window.mapPixelToCoords(screenPos);
+	Vector2u mapDimensions = render.getTexture().getSize();
+	float radius = render.getRadius();
+	float x = (mapPos.x - mapDimensions.x / 2)/(radius * sqrtf(3.0f)) - (mapPos.y - mapDimensions.y/2)/(radius*3.0f);
+	float z = (mapPos.y - mapDimensions.y / 2)/(radius * (3.0f / 2.0f));
+	std::cout << x << ", " << z << std::endl;
 	Vector2f ret(x, z);
 	return roundHex(ret);
 }
