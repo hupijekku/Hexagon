@@ -44,7 +44,7 @@ void Render::generateTexture()
 		shape.setPosition(drawX, drawZ);
 		shape.setOutlineThickness(2.0f);
 		shape.setOutlineColor(Color::Black);
-		shape.setFillColor(Color::White);
+		shape.setFillColor(hex.getColor());
 		this->baseMap.draw(shape);
 	}
 	Sprite sprite(this->baseMap.getTexture());
